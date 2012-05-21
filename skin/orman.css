@@ -1,0 +1,377 @@
+.jp-video {
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    position:relative;
+}
+.jp-video-360p {
+    width:680px;
+}
+.jp-video-full {
+    width:1000px;
+    height:563px;
+    position:static !important;
+    position:relative
+}
+.jp-video-full .jp-jplayer {
+    top: 0;
+    left: 0;
+    position: fixed !important; position: relative; /* Rules for IE6 (full-screen) */
+    overflow: hidden;
+    z-index:1000;
+}
+ 
+.jp-video-full .jp-gui {
+    position: fixed !important; position: static; /* Rules for IE6 (full-screen) */
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    z-index:1000;
+}
+.jp-video-full .jp-interface {
+    position: absolute !important; position: relative; /* Rules for IE6 (full-screen) */
+    bottom: 0;
+    left: 0;
+    z-index:1000;
+}
+
+.jp-interface {
+    position: relative;
+    width:100%;
+    height: 35px;
+ 
+    background-image: -webkit-linear-gradient(top, rgb(242, 242, 242), rgb(209, 209, 209));
+    background-image: -moz-linear-gradient(top, rgb(242, 242, 242), rgb(209, 209, 209));
+    background-image: -o-linear-gradient(top, rgb(242, 242, 242), rgb(209, 209, 209));
+    background-image: -ms-linear-gradient(top, rgb(242, 242, 242), rgb(209, 209, 209));
+    background-image: linear-gradient(top, rgb(242, 242, 242), rgb(209, 209, 209));
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#f2f2f2', EndColorStr='#d1d1d1');
+ 
+    -webkit-box-shadow:
+        inset 0px 1px 0px #f7f7f7,
+        inset 0px -1px 0px #e2e2e2;
+    -moz-box-shadow:
+        inset 0px 1px 0px #f7f7f7,
+        inset 0px -1px 0px #e2e2e2;
+    box-shadow:
+        inset 0px 1px 0px #f7f7f7,
+        inset 0px -1px 0px #e2e2e2;
+}
+ 
+div.jp-controls-holder {
+    clear: both;
+    width:680px;
+    margin: 0 auto;
+ 
+    position: relative;
+    overflow:hidden;
+}
+
+.jp-video-full div.jp-controls-holder {
+    width:1000px;
+}
+
+a.jp-play,
+a.jp-pause {
+    width:40px;
+    height:35px;
+    float:left;
+    text-indent:-9999px;
+    outline:none;
+}
+ 
+a.jp-play {
+    background: url("sprite.png") 0 0 no-repeat;
+}
+ 
+a.jp-pause {
+    background: url("sprite.png") -40px 0 no-repeat;
+    display: none;
+}
+ 
+.separator {
+    background-image:url("separator.png");
+    background-repeat:no-repeat;
+    width: 2px;
+    height: 35px;
+    float:left;
+    margin-top: 7px;
+    margin-right: 10px;
+}
+
+.jp-progress {
+    background: #706d6d;
+ 
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+ 
+    -webkit-box-shadow:
+        inset 0px 1px 4px rgba(0,0,0,.4),
+        0px 1px 0px rgba(255,255,255,.4);
+    -moz-box-shadow:
+        inset 0px 1px 4px rgba(0,0,0,.4),
+        0px 1px 0px rgba(255,255,255,.4);
+    box-shadow:
+        inset 0px 1px 4px rgba(0,0,0,.4),
+        0px 1px 0px rgba(255,255,255,.4);
+ 
+    width:360px;
+    height:10px;
+    float:left;
+    margin-top: 13px;
+}
+
+.jp-video-full .jp-progress {
+    width:680px;
+}
+ 
+.jp-seek-bar {
+    width:0px;
+    height:100%;
+    cursor: pointer;
+}
+ 
+.jp-seeking-bg {
+    background:#575555;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+}
+ 
+.jp-play-bar {
+    background: url("play-bar.png") left repeat-x;
+    width:0px;
+    height:10px;
+    position:relative;
+    z-index: 9999;
+ 
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+}
+ 
+.jp-play-bar span {
+    position:absolute;
+    top: -3px;
+    right: -12px;
+ 
+    background:url("handle.png") no-repeat center;
+    width: 16px;
+    height: 17px;
+}
+
+
+
+.jp-screen-loader {
+    position:absolute;
+    display:block;
+    background-color : #000000;
+    opacity: 0.7;
+    filter:alpha(opacity=70); /* For IE8 and earlier */
+    width: 50px;
+    height: 50px;
+
+    left:50%;
+    right:50%;
+}
+
+
+.jp-current-time {
+    float: left;
+    display:inline;
+}
+.jp-duration {
+    float: left;
+    display:inline;
+    text-align: right;
+}
+.jp-video .jp-current-time {
+    margin-left:10px;
+}
+.jp-video .jp-duration {
+    margin-right:10px;
+}
+.time-sep {
+    float:left;
+    margin: 13px 3px 0 3px;
+ 
+    font-size:11px;
+    font-family:Arial;
+    color:#444444;
+}
+
+.jp-video a.jp-mute,
+.jp-video a.jp-unmute {
+    text-indent:-9999px;
+    float:left;
+ 
+    height: 35px;
+    outline:none;
+}
+ 
+.jp-mute {
+    float:left;
+    background: url("sprite.png") -80px 0 no-repeat;
+    margin-top: 1px;
+    margin-left: -10px;
+    width: 35px;
+}
+ 
+a.jp-unmute {
+    background: url("sprite.png") -115px 0 no-repeat;
+    margin-top: 1px;
+    margin-left: -13px;
+    display: none;
+    width: 38px;
+}
+ 
+.jp-volume-bar {
+    float:left;
+    margin-top: 13px;
+    margin-right: 10px;
+    overflow:hidden;
+    width:70px;
+    height:10px;
+    cursor: pointer;
+ 
+    background: #706d6d;
+ 
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+ 
+    -webkit-box-shadow:
+        inset 0px 1px 4px rgba(0,0,0,.4),
+        0px 1px 0px rgba(255,255,255,.4);
+    -moz-box-shadow:
+        inset 0px 1px 4px rgba(0,0,0,.4),
+        0px 1px 0px rgba(255,255,255,.4);
+    box-shadow:
+        inset 0px 1px 4px rgba(0,0,0,.4),
+        0px 1px 0px rgba(255,255,255,.4);
+}
+ 
+.jp-volume-bar-value {
+    background: transparent;
+    width:0px;
+    height:10px;
+    position: relative;
+}
+ 
+.jp-volume-bar-value span {
+    position:absolute;
+    top: 0px;
+    right: 0px;
+ 
+    background:url("volume.png") no-repeat center;
+    width: 11px;
+    height: 10px;
+}
+
+.jp-full-screen {
+    background: url("sprite.png") -150px 0 no-repeat;
+    float:left;
+    width: 40px;
+    height: 35px;
+    text-indent:-9999px;
+    margin-left: -15px;
+    outline:none;
+}
+ 
+.jp-restore-screen {
+    background: url("sprite.png") -150px 0 no-repeat;
+    float:left;
+    width: 40px;
+    height: 35px;
+    text-indent:-9999px;
+    margin-left: -15px;
+    outline:none;
+}
+
+div.jp-video div.jp-video-play, div.jp-video div.jp-video-busy, div.jp-video div.jp-quality-ctrl{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    cursor:pointer;
+    background-color:rgba(0,0,0,0); /* Makes IE9 work with the active area over the whole video area. IE6/7/8 only have the button as active area. */
+}
+
+div.jp-video-360p div.jp-video-play, div.jp-video-360p div.jp-video-busy, div.jp-video-360p div.jp-quality-ctrl{
+    height:383px;
+}
+div.jp-video-full div.jp-video-play, div.jp-video-full div.jp-video-busy, div.jp-video-full div.jp-quality-ctrl{
+    height:100%;
+    z-index:1000;
+}
+
+.jp-video-play-icon, .jp-video-busy-icon{
+    position:relative;
+    display:block;
+    background-color : #000000;
+    opacity: 0.7;
+    filter:alpha(opacity=70); 
+    width: 50px;
+    height: 50px;
+    margin-left : -25px;
+    margin-top : -25px;
+    left:50%;
+    top:50%;
+    z-index:9999999;
+}
+
+.jp-video-play-icon img, .jp-video-busy-icon img {
+    display:block;
+    width: 31px;
+    height: 31px;
+    padding: 9px;
+    left:50%;
+}
+
+
+.jp-current-time,
+.jp-duration,
+.jp-quality{
+    font-size:11px;
+    font-family:Arial;
+    color:#444444;
+    margin-top: 12px;
+    float:left;
+}
+
+.jp-quality a,
+.jp-quality-ctrl a{
+    text-decoration : none; 
+    color:#444444;
+    z-index: 9999;
+}
+
+.jp-quality-ctrl ul{
+    position:relative;
+    
+    background-image: -webkit-linear-gradient(top, rgb(209, 209, 209), rgb(242, 242, 242));
+    background-image: -moz-linear-gradient(top, rgb(209, 209, 209), rgb(242, 242, 242));
+    background-image: -o-linear-gradient(top, rgb(209, 209, 209), rgb(242, 242, 242));
+    background-image: -ms-linear-gradient(top, rgb(209, 209, 209), rgb(242, 242, 242));
+    background-image: linear-gradient(top, rgb(209, 209, 209), rgb(242, 242, 242));
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#d1d1d1', EndColorStr='#f2f2f2');
+ 
+    font-size:11px;
+    font-family:Arial;
+    color:#444444;
+    width: 24px;
+    height: 70px;
+    left:640px;
+    top:294px;
+    z-index: 9999;
+    padding: 8px 8px 0 8px;
+}
+
+.jp-video-full .jp-quality-ctrl ul {
+    left:960px;
+    top:440px    
+}
+
+.jp-quality-ctrl li {
+    padding-bottom: 4px;
+}

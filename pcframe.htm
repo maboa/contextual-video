@@ -1,0 +1,885 @@
+<!--
+
+ Dual licensed under the MIT and GPL licenses.
+ - http://www.opensource.org/licenses/mit-license.php
+ - http://www.gnu.org/copyleft/gpl.html
+ 
+ Author: Mark Boas - @maboa 
+ Date: 1st March 2012
+
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />  
+
+<title>Amazonia Pt 3</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+<link href="css/tab.css" rel="stylesheet" type="text/css" />
+<link href="skin/orman.css" rel="stylesheet" type="text/css" />
+<link href="css/add2home.css" rel="stylesheet" type="text/css" />
+
+<link rel="apple-touch-icon" href="icon-small.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="icon-med.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="icon-large.png" />
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>-->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="js/popcorn-ie8.js"></script>
+<script type="text/javascript" src="js/popcorn.js"></script>
+<script type="text/javascript" src="js/popcorn.superpanelator.js"></script>
+<script type="text/javascript" src="js/jquery.grab.js"></script>
+<script type="text/javascript" src="js/popcorn.player.js"></script>
+<script type="text/javascript" src="js/popcorn.jplayer.js"></script>
+<script type="text/javascript" src="js/tabletop.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function(){
+
+	var parentUrl = "http://www.aljazeera.com/indepth/interactive/2012/04/20124107156511888.html";
+
+	$('#viewsource').click(function() {
+		window.open("view-source:" + window.location.href,'_newtab');
+
+		return false;
+	});
+
+	var videoFullscreenWidth = 1000;
+	var videoOriginalWidth = $('.player-hldr').width();
+	var infoOriginalWidth = $('.info-hldr').width();
+
+	var video = new Array();
+
+	var data_loaded = false;
+
+
+	video['lo'] = "http://bc05.ajnm.me/665003303001/665003303001_1475621762001_WEB-FFA-INTERNET--1555-26.mp4";
+	video['me'] = "http://bc05.ajnm.me/665003303001/665003303001_1475632346001_WEB-FFA-INTERNET--1555-26.mp4";
+	video['hi'] = "http://bc05.ajnm.me/665003303001/665003303001_1475631781001_WEB-FFA-INTERNET--1555-26.mp4";
+	video['hd'] = "http://bc05.ajnm.me/665003303001/665003303001_1475648945001_WEB-FFA-INTERNET--1555-26.mp4";
+
+
+	var currentVideo = 0;
+	var currentQuality = 'lo';
+	var currentTime = 0;
+
+	var myPlayer = $("#jquery_jplayer_1");
+
+	myPlayer.bind($.jPlayer.event.ready, function() {
+		if(!($.browser.msie && $.browser.version < 9)) {
+  			initGrabControl();
+		}
+ 	});
+
+	myPlayer.bind("jPlayerPopcornReady", function() {
+		checkStartParam();
+ 	});
+
+	initPopcorn("#jquery_jplayer_1");
+
+
+	$('.quality-switch').click(function(){
+		clearInstructions();
+		var timeOnClick = currentTime;
+		var quality = $(this).attr('q');
+		myPlayer.jPlayer('setMedia', {m4v: video[quality]});
+		myPlayer.jPlayer('play',timeOnClick);
+		$('.jp-quality-ctrl').fadeOut();
+		$('.quality-btn').hide();
+		$('.quality-btn[q="'+quality+'"]').show();
+		$('.jp-video-busy').show();
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Quality button', 'switched to '+$(this).attr('q')]);
+
+		return false;
+	})
+
+
+	$('.quality-btn').click(function(){
+
+		if ($('.jp-quality-ctrl').is(':visible')) { 
+			$('.jp-quality-ctrl').fadeOut();
+		} else {
+			$('.jp-quality-ctrl').fadeIn();			
+		}
+
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Quality button', 'clicked']);
+
+		return false;
+	});
+
+
+ 	function initGrabControl() {
+
+		// jquery.grab event properties: event.position.x, event.position.y
+
+		var dragEventPeriod = 250,
+			dragEventOccurred = false,
+			dragEventLimiterId = null,
+			dragEventX = 0;
+
+		$('#jp-play-drag').grab({
+
+			onstart: function(){
+				dragEventOccurred = false;
+				clearInterval(dragEventLimiterId);
+				dragEventLimiterId = setInterval(function() {
+					if(dragEventOccurred) {
+						grabBar(dragEventX);
+						dragEventOccurred = false;
+					}
+				}, dragEventPeriod);
+			}, onmove: function(event){
+				dragEventX = event.position.x;
+				dragEventOccurred = true;
+			}, onfinish: function(event){
+				clearInterval(dragEventLimiterId);
+				dragEventOccurred = false;
+			}
+		});
+
+		$('#jp-play-volume').grab({
+
+			onstart: function(){
+				//console.log('mooo');
+				//console.log('jPlayerObj.css.jq.seekBar');
+				dragEventOccurred = false;
+				clearInterval(dragEventLimiterId);
+				dragEventLimiterId = setInterval(function() {
+					if(dragEventOccurred) {
+						grabBarVol(dragEventX);
+						dragEventOccurred = false;
+					}
+				}, dragEventPeriod);
+			}, onmove: function(event){
+				dragEventX = event.position.x;
+				dragEventOccurred = true;
+			}, onfinish: function(event){
+				clearInterval(dragEventLimiterId);
+				dragEventOccurred = false;
+			}
+		});
+	}
+
+
+	function grabBar(xDrag) { // Handles seekBar dragging
+		var jPlayerObj = myPlayer.data("jPlayer");
+		if(jPlayerObj.css.jq.seekBar) {
+			var offset = jPlayerObj.css.jq.seekBar.offset();
+			var x = xDrag - offset.left;
+			var w = jPlayerObj.css.jq.seekBar.width();
+			var p = 100*x/w;
+			myPlayer.jPlayer("playHead", p);
+		}
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Progress bar', 'dragged']);
+	}
+
+	var volumeBar = $('.jp-volume-bar');
+
+	function grabBarVol(xDrag) { // Handles seekBar dragging
+		var jPlayerObj = myPlayer.data("jPlayer");
+		if(volumeBar) {
+			var offset = volumeBar.offset();
+			var x = xDrag - offset.left;
+			var w = volumeBar.width();
+			var v = x/w;
+			myPlayer.jPlayer("volume", v); // Vol is a ratio, 0 to 1.
+		}
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Volume bar', 'dragged']);
+	}
+
+	var timeline = null;
+
+	function initPopcorn(id) {  
+		$('.panel-num').text('loading...');
+		var p = Popcorn.jplayer(id, video[currentQuality]);  
+
+		var mediaLength = 3000; // arbitary number
+
+		Tabletop.init( { key: '0AjaMSiwysxCKdFFlalU2bFRYQTU3RC16a1VDX3NnblE',
+			callback: function(data, tabletop) {
+				timeline = data;
+
+				if (timeline == null || timeline[0].text == undefined){
+					alert('Apologies there seems to be an issue contacting Google Docs.');
+
+					_gaq.push(['_trackEvent', 'Amazonia', 'Google Docs', 'error']);
+
+				} else {
+
+	  				for (i=0; i < timeline.length; i++) {
+
+	  					// the timeline extension requires that we are this strict
+
+	  					if (timeline[i].text == "") timeline[i].text = undefined;
+						if (timeline[i].quote == "") timeline[i].quote = undefined;
+						if (timeline[i].quoter == "") timeline[i].quoter = undefined;
+						if (timeline[i].img == "") timeline[i].img = undefined;
+
+						var start = parseInt(timeline[i].start);
+
+						//var start = timeline[i].start;
+
+	  					p.superpanelator({
+							start: start, 
+							end: mediaLength, 
+							target: 'timeline',
+							fstarget: 'fstimeline',
+							btntarget: 'jump-time',
+							btnhref: 'jump-link',
+							panelnum: 'panel-num',
+							tweethref: 'ctrl-tweet',
+							text: timeline[i].text,
+							quote: timeline[i].quote,
+							quoter: timeline[i].quoter,
+							img: timeline[i].img,
+							index: i,
+							total: timeline.length,
+							shareUrl : parentUrl,
+							shareHash : "@AJEnglish #opennews"
+						});
+					}
+	
+					fadePanel();	
+					$('.panel-num').text('1');
+					$('.panel-total').text(timeline.length);
+					$('#ctrl-fwd-off').hide();
+					$('#ctrl-fwd').show();		
+					data_loaded = true;		
+
+					_gaq.push(['_trackEvent', 'Amazonia', 'Google Docs', 'Data Loaded']);
+				}
+								
+			},
+			simpleSheet: true
+		});
+
+	}
+
+
+    function checkStartParam() {
+      if (getUrlVars()["s"] != null) {    
+        var s = parseInt(getUrlVars()["s"])/10;    
+        myPlayer.jPlayer("play",s);
+        clearInstructions();    
+      }
+    }
+
+    // These events are fired as play time increments  
+
+    function fadePanel() {
+    	$('.fademe').css('opacity', 0)
+  			.slideDown('slow')
+  			.animate(
+    			{ opacity: 1 },
+    			{ queue: false, duration: 'slow' }
+  			).removeClass('fademe');
+    }
+
+    function clearInstructions() {
+    	$('.inst-text').remove();
+    	$('#ibuttons').remove();
+    	$('#start-hldr').remove();
+    }
+
+    var playingWord = 1;
+
+    myPlayer.bind($.jPlayer.event.timeupdate, function(event) {       
+
+		playTimeEn = event.jPlayer.status.currentPercentAbsolute;  
+		currentTime = event.jPlayer.status.currentTime; 
+
+      	fadePanel();
+
+      	if (currentTime > 0) {
+      		clearInstructions();
+      	}
+
+		var currentIndex = parseInt(($('.panel-num').text())-1);
+
+		if (currentIndex > 0) {
+			$('#ctrl-back-off').hide();
+			$('#ctrl-back').show();			
+		} else {
+			$('#ctrl-back').hide();
+			$('#ctrl-back-off').show();					
+		}
+
+
+		if (timeline && currentIndex == timeline.length - 1) {
+			$('#ctrl-fwd').hide();
+			$('#ctrl-fwd-off').show();	
+		} else if (data_loaded) {	
+			$('#ctrl-fwd-off').hide();	
+			$('#ctrl-fwd').show();		
+		}
+
+     	var visible = $('.fs-info:visible');
+      	var lastAppear = parseInt(visible.attr('start'));
+
+    	if (currentTime > (lastAppear + 20)) {
+    		visible.fadeOut();
+    	}
+
+  		$('.jp-video-busy').hide();
+
+  		_gaq.push(['_trackEvent', 'Amazonia', 'Time Update', 'Triggered at '+currentTime]);
+
+    });
+
+ 	myPlayer.bind($.jPlayer.event.pause, function(event) {  
+ 		$('.jp-video.play').show();
+
+ 		_gaq.push(['_trackEvent', 'Amazonia', 'Pause', 'Clicked']);
+ 	});   
+
+ 	// checks for full screen
+
+ 	myPlayer.bind($.jPlayer.event.resize, function(event) {
+
+ 		_gaq.push(['_trackEvent', 'Amazonia', 'Resized', '$.jPlayer.event.resize']);
+
+		if(event.jPlayer.options.fullScreen) {
+			$('.player-hldr').width(1000);
+			$('.info-hldr').width(0);	
+			$('#fstimeline').fadeIn();		
+
+			_gaq.push(['_trackEvent', 'Amazonia', 'Full-screen', 'switched to full screen']);
+
+   		} else {
+			$('.player-hldr').width(videoOriginalWidth);
+			$('.info-hldr').width(infoOriginalWidth);
+			$('#fstimeline').hide();
+
+			_gaq.push(['_trackEvent', 'Amazonia', 'Restore screen', 'restored to normal size screen']);			
+   		}
+	});
+
+	myPlayer.bind($.jPlayer.event.play, function() {
+		$('.jp-video-busy').show();
+	});
+
+	$('.jp-play').click(function() {
+
+		$('.jp-video-busy').show();
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Play clicked']);
+	});
+
+	$('.jp-progress').click(function() {
+		$('.jp-video-busy').show();
+		$('.fs-info:visible').hide();
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Play', 'jPlayer Progress bar clicked']);
+	});
+
+	// 
+
+	function checkStartParam() {
+		if (getUrlVars()["s"] != null) {    
+
+			var s = parseInt(getUrlVars()["s"]);    
+			myPlayer.jPlayer("play",s);    
+			_gaq.push(['_trackEvent', 'Amazonia', 'Start parameter', 'Triggered at '+s]);
+		}
+	}
+
+	function getUrlVars() {
+		var vars = [], hash;
+		var myWindow = window;
+
+		if (parent) {
+			myWindow = parent.window;
+		}
+        
+		var hashes = parentUrl.slice(parentUrl.indexOf('?') + 1).split('&');
+		for(var i = 0; i < hashes.length; i++)
+		{
+			hash = hashes[i].split('=');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+      return vars;
+    }  
+
+	// tabswitchery
+
+	$('#tab1').click(function() {
+		$('#secondTab').hide();
+		$('#thirdTab').hide();
+		$('#firstTab').show();
+		$('.tab').removeClass('selected');
+		$(this).addClass('selected');
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'More Info', 'tab 1 clicked']);
+
+		return false;
+	});
+
+	$('#tab2').click(function() {
+		$('#thirdTab').hide();
+		$('#firstTab').hide();
+		$('#secondTab').show();
+		$('.tab').removeClass('selected');
+		$(this).addClass('selected');
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'More Info', 'tab 2 clicked']);
+
+		return false;
+	});
+
+	$('#tab3').click(function() {
+		$('#secondTab').hide();
+		$('#firstTab').hide();
+		$('#thirdTab').show();
+		$('.tab').removeClass('selected');
+		$(this).addClass('selected');
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'More Info', 'tab 3 clicked']);
+
+		return false;
+	});	
+
+	// close overlay
+
+	$('#close-overlay').click(function() {
+		$('#overlay').fadeOut('fast');
+		return false;
+	});	
+
+	$('.findout').click(function() {
+		$('#overlay').fadeIn('fast');
+		_gaq.push(['_trackEvent', 'Amazonia', 'More Info', 'more info clicked']);
+		return false;
+	});	
+
+
+	$('html').click(function() {
+		$('#overlay').fadeOut('fast');
+		$('.jp-quality-ctrl').fadeOut('fast');
+	});	
+
+	$('#overlay').click(function(e) {
+		e.stopPropogation();
+	});
+
+	$('.popout').click(function() {
+		if (top.location != self.location) {
+			top.location = self.location.href;
+		}
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Pop-out', 'pop-out clicked']);
+
+		return false;
+	});
+
+
+	$('#ctrl-back').click(function() {
+
+		var prevIndex = parseInt($('.panel-num').text())-2; 
+		var current = $('#timeline div[data-index="'+(prevIndex+1)+'"]');
+
+		var time = timeline[prevIndex].start;
+		$('#jump-link').attr('href',time);
+		$('#jump-time').text(utility.getMins(time));
+		$('#ctrl-tweet').attr('href',utility.getTweet(timeline[prevIndex]));
+		current.fadeOut('fast');
+
+		if (prevIndex == 0) {
+			$(this).hide();
+			$('#ctrl-back-off').show();
+		}
+
+		$('#ctrl-fwd-off').hide();
+		$('#ctrl-fwd').show();
+
+		$('.panel-num').text((prevIndex+1));
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Panel', 'back button clicked']);
+
+		return false;
+	});
+
+	$('#ctrl-fwd').click(function() {
+
+		//var next = $('.info-item:hidden').last().parent();
+
+		//var nextIndex = next.attr('data-index');
+		var nextIndex = parseInt($('.panel-num').text());
+		var next = $('#timeline div[data-index="'+nextIndex+'"]');
+		var time = timeline[nextIndex].start;
+		$('#jump-link').attr('href',time);
+		$('#jump-time').text(utility.getMins(time));
+		$('#ctrl-tweet').attr('href',utility.getTweet(timeline[nextIndex]));
+		next.fadeIn('fast');
+
+		if (parseInt(nextIndex)+1 == timeline.length) {
+			$(this).hide();
+			$('#ctrl-fwd-off').show();
+		}
+
+		$('#ctrl-back-off').hide();
+		$('#ctrl-back').show();
+
+		$('.panel-num').text((nextIndex+1));
+
+		_gaq.push(['_trackEvent', 'Amazonia', 'Panel', 'forward button clicked']);
+
+		return false;
+	});
+
+	$('.jump-btn').click(function() {
+		$('.jp-video-busy').show();
+      	var jumpTo = parseInt($(this).attr('href')); 
+      	myPlayer.jPlayer('play',jumpTo);
+
+      	_gaq.push(['_trackEvent', 'Amazonia', 'Panel', 'jump button clicked']);
+
+		return false;
+	});
+
+	$('.largescreen').click(function() {
+		$('.jp-full-screen').trigger('click');
+		return false;
+	});
+
+	$('.d-play a').live('click',function(){
+		$('.jp-play').trigger('click');
+		return false;
+	});
+
+});
+
+
+
+var addToHomeConfig = {
+	autostart: false
+};
+
+if (top.location == self.location) {
+	setTimeout(function () {
+     addToHome.show();
+  }, 1000);
+}
+
+
+</script>
+<script type="application/javascript" src="js/add2home.js"></script>
+
+<!-- GA @start code -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  //_gaq.push(['_setAccount', 'UA-30542235-1']); // aljazeera.com
+
+  _gaq.push(['_setAccount', 'UA-3557377-3']); // happyworm.com
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- GA @end code -->
+
+</head>
+<body>
+	<div class="app-hldr">
+		<div class="player-hldr">
+			<div id="jp_container_1" class="jp-video jp-video-360p">
+				<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+
+					<!--main containers for our controls-->
+		    		<div class="jp-gui">
+		    			<div class="jp-video-play">
+		    				<span class="jp-video-play-icon"><img src="video-play.png"/></span>
+		    			</div>
+
+		    			<div class="jp-video-busy" style="display:none">
+		    				<span class="jp-video-busy-icon"><img src="ajax-loader.gif"/></span>
+		    			</div>
+
+		    			<div class="jp-quality-ctrl" style="display:none">
+		    				<ul>
+		    					<li><a class="quality-switch" q="lo" href="#">low</a></li>
+		    					<li><a class="quality-switch" q="me" href="#">med</a></li>
+		    					<li><a class="quality-switch" q="hi" href="#">high</a></li>
+		    					<li><a class="quality-switch" q="hd" href="#">HD</a></li>
+							</ul>
+		    			</div>
+
+		    			<div id ="fstimeline" class="fullscreen-info" style="display:none">
+		    			</div>
+
+
+		    			<!--<div class="jp-screen-loader"></div>-->
+		        		<div class="jp-interface">
+		            	<div class="jp-controls-holder">
+								<!--play and pause buttons-->
+								<a href="#" class="jp-play" tabindex="1">play</a>
+								<a href="#" class="jp-pause" tabindex="1">pause</a>
+								<span class="separator sep-1"></span>
+								 
+								<!--progress bar-->
+								<div class="jp-progress">
+									<div class="jp-seek-bar">
+								    	<div class="jp-play-bar"><span id="jp-play-drag"></span></div>
+									</div>
+								</div>
+								 
+								<!--time notifications-->
+								<div class="jp-current-time"></div>
+								<span class="time-sep">/</span>
+								<div class="jp-duration"></div>
+								<span class="separator sep-2"></span>
+								 
+								<!--mute / unmute toggle-->
+								<a href="javascript:;" class="jp-mute" tabindex="2" title="mute">mute</a>
+								<a href="javascript:;" class="jp-unmute" tabindex="2" title="unmute">unmute</a>
+								 
+								<!--volume bar-->
+								<div class="jp-volume-bar">
+									<div class="jp-volume-bar-value"><span id="jp-play-volume" class="handle"></span></div>
+								</div>
+								<span class="separator sep-2"></span>
+								 
+								<!--full screen toggle-->
+								<a href="#" class="jp-full-screen" tabindex="3" title="full screen">full screen</a>
+								<a href="#" class="jp-restore-screen" tabindex="3" title="restore screen">restore screen</a>
+
+								<div class="jp-quality">
+									<a class="quality-btn" q="lo" href="#">low</a>
+									<a class="quality-btn" q="me" href="#" style="display:none">med</a>
+									<a class="quality-btn" q="hi" href="#" style="display:none">high</a>
+									<a class="quality-btn" q="hd" href="#" style="display:none">HD</a>
+								</div>
+
+		            	</div><!--end jp-controls-holder-->
+		        		</div><!--end jp-interface-->
+		    		</div><!--end jp-gui-->
+
+					<!--unsupported message-->
+					<div class="jp-no-solution">
+				   	<span>Update Required</span>
+				   	The version of Flash you are using is not supported.
+					</div>
+			
+				</div><!--end jp_container_1-->
+			</div>
+
+			<h1 class="info-title">
+				Interactive Sidebar
+			</h1>
+			<div class="info-hldr">
+				
+				<div id="timeline" class="info">
+
+				</div>
+				<div class="panel-num-hldr">
+					<span class="panel-num"></span> / <span class="panel-total"></span>
+				</div>
+				<div class="control-hldr">
+					<a id="jump-link" class="clean-gray jump-btn" href="30">
+						<img class="button-img" src="images/vcamera_small.png"><span id="jump-time"></span></a>
+					<a id="ctrl-tweet" class="twitter-blue" target="_blank" href="#">
+						<img class="button-img" src="images/twitter.png"></a>
+					<a style="display:none" id="ctrl-back" class="aj-orange" target="_blank" href="#">
+						<img class="button-img" src="images/left-arrow.png"></a>
+					<span id="ctrl-back-off" class="aj-orange" target="_blank" href="#">
+						<img class="button-img" src="images/left-arrow-inactive.png"></span>
+					<a style="display:none" id="ctrl-fwd" class="aj-orange" target="_blank" href="#">
+						<img id="ctrl-fwd" class="button-img" src="images/right-arrow.png"></a>
+					<span id="ctrl-fwd-off" class="aj-orange" target="_blank" href="#">
+						<img id="ctrl-fwd" class="button-img" src="images/right-arrow-inactive.png"></span>
+				</div>
+			</div> 
+		</div> <!-- end .player-hldr -->
+
+		<div class="footer-hldr">
+			<div class="project-info-hldr">
+				<p>
+					This demo is an experiment in augmenting video with additional information. This content can be used more interactively in the default mode or viewed more passively in <a href="#" class="largescreen">large screen mode</a>. The interactive mode allows you to tweet excerpts of the panel info with a link to that part of the video.
+				</p>		
+				<p>
+					You can also <a href="#" class="popout">'pop-out'</a> the content for standalone viewing and add it to your home screen to view later.
+				</p>	
+				<p>
+					<a class="more-info findout" href="#">more info ↸</a>
+				</p>	
+			</div>
+
+			<div class="corner-hldr">
+				<div class="logos">
+					<a href="http://www.aljazeera.com/" target="_blank" class="left-logo"><img src="logos/aljazeera.png"></a>
+					<img class="collaborate" src="logos/collaborate.png">
+					<a href="http://mozillaopennews.org/" target="_blank"><img src="logos/opennews.png"></a>
+				</div>
+				<p><!--<a href="#" id="viewsource" class="corner-link">view source ↬</a>-->
+				   <a href="#" class="corner-link pop-link popout">pop out ↭</a>
+				</p> 
+			</div>
+		</div>
+	</div> <!-- end .app-hldr -->
+
+
+	<div id="overlay" style="display:none">
+		<div id="close-overlay"><a href=""><img src="close.png"/></a></div>
+		<div class="tabs">
+
+    		<ul class="tabNavigation">
+        		<li><a class="tab selected" id ="tab1" href="#">about the project</a></li>
+        		<li><a class="tab" id ="tab2" href="#">technology used</a></li>
+        		<li><a class="tab" id ="tab3" href="#">credits</a></li>
+    		</ul> 
+	
+    		<div class ="tabPage" id="firstTab" >  
+    			<p>The idea behind this project was to augment video with additional material and to provide the viewer with a level of interaction without significantly distracting from the main content.</p>
+    			<p>For the editor's convenience the content is pulled live from an online spreadsheet.</p>
+    			<p>Ideas for future implementations include the use of word accurate hyperlinked transcripts, full support for mobile devices and second-screen synchronisation.</p>
+    			<p>We're just experimenting. We'd love to hear your thoughts on what we have implemented so far and any ideas you may have to improve the experience as we iterate.</p>
+    			<p>This project was created as part of the <a href="http://www.mozillaopennews.org/" target="_blank">Knight-Mozilla Open News ↬</a> initiative. All code is free, open-source and suitably licensed.
+    			</p>
+    			<p><a href="http://www.mozillaopennews.org/"><img src="ONlogotype_wide2.png" /></a></p>
+	    	</div>
+	
+    		<div class ="tabPage" id="secondTab" style="display:none">
+				<p>This project built entirely of client-side code. That is to say code that runs in the browser. Which means less stress on the server but more importantly that you can deploy, run and alter simply on a server of your choice. The only tool required is a text editor.</p>
+				<p>We use HTML, JavaScript and CSS, with these three elements we can control design, function and behaviour in multiple browsers and on multiple devices.</p>
+				<p>Inspired by others - we use and build upon open libraries made freely available. Where possible, we contribute back to these projects in an attempt to keep the open and free eco-system thriving.</p>
+				<p>Libraries we used include <a href="http://jquery.com">jQuery</a>, <a href="http://jPlayer.org">jPlayer</a>, <a href="https://github.com/jussi-kalliokoski/jQuery.grab">grab.js</a>, <a href="http://popcornjs.org/">Popcorn.js</a>, <a href="http://builtbybalance.com/Tabletop/">Tabletop.js</a> and <a href="http://cubiq.org/add-to-home-screen">add2home.js</a>.</p>
+				<p>These are just demos, experimentation with new ideas and technologies - we're just gluing bits together and iterating as fast as we can. We'll do the optimisation later.</p> 
+				<p><a class="logo-small" href="http://jquery.org/"><img src="jquery.png"/></a><a class="logo-small" href="http://jplayer.org/"><img src="jplayer.png"/></a><a class="logo-small" href="http://popcornjs.org/"><img src="popcorn.png"/></a></p>
+    		</div>
+
+    		<div class ="tabPage" id="secondTab" style="display:none">
+				<p>Ideas for future implementations include the use of word accurate hyperlinked transcripts, full support for mobile devices and second-screen synchronisation.</p>	 
+    		</div>
+	
+    		<div class ="tabPage" id="thirdTab" style="display:none">
+    			<table class="credits">
+					<tr>
+						<td>
+						<ul>
+    					<li>2 [Ilka Franzmann]</li>
+						<li>3 [Nasa]</li>
+						<li>4 [The Fight for Amazonia]</li></li>
+						<li>5 [CC: Jeff Ogden (W163)]</li>
+						<li>6 [Gallo/Getty]</li>
+						<li>7 [The Fight for Amazonia]</li>
+						<li>8 [The Fight for Amazonia]</li>
+						<li>9 [The Fight for Amazonia]</li>
+						<li>10 [Al Jazeera]</li>
+						<li>13 [Gallo/Getty]</li>
+						<li>15 [CC: Rei-arthur]</li></li>
+						<li>16 [Gallo/Getty]</li>
+						<li>17 [Gallo/Getty]</li>
+						<li>18 [Gallo/Getty]</li>
+						<li>20 [Gallo/Getty]</li>
+						<li>22 [Al Jazeera]</li>
+						<li>23 [Rodrigo Fonseca]</li>
+						<li>25 [Gallo/Getty]</li>
+						<li>28 [Al Jazeera]</li>
+						<li>29 [Al Jazeera]</li>
+						<li>32 [Al Jazeera]</li>
+						<li>34 [Al Jazeera]</li>
+						<li>37 [Al Jazeera]</li>
+						<li>43 [Gallo/Getty]</li>
+						<li>47 [The Fight for Amazonia]</li>
+						<li>48 [Gallo/Getty]</li>
+						<li>50 [Gallo/Getty]</li>
+						<li>52 [Al Jazeera]</li>
+						<li>55 [Gallo/Getty]</li>
+						<li>57 [Nho on Flickr]</li>
+						</ul>
+						</td>
+					
+					
+						<td>
+						<ul>
+						<li>61 [Gallo/Getty]</li>
+						<li>64 [EPA]</li>
+						<li>68 [EPA]</li>
+						<li>72 [EPA]</li>
+						<li>73 [EPA]</li>
+						<li>75 [The Fight for Amazonia]</li>
+						<li>76 [Gallo/Getty]</li>
+						<li>80 [The Fight for Amazonia]</li>
+						<li>84 [Gallo/Getty]</li>
+						<li>86 [Public Domain]</li>
+						<li>87 [Gallo/Getty]</li>
+						<li>89 [The daredevil pilots of Colombia]</li>
+						<li>90 [EPA]</li>
+						<li>91 [Gallo/Getty]</li>
+						<li>92 [The Fight for Amazonia]</li>
+						<li>94 [EPA]</li>
+						<li>95 [EPA]</li>
+						<li>96 [EPA]</li>
+						<li>98 [EPA]</li>
+						<li>99 [EPA]</li>
+						<li>100 [EPA]</li>
+						<li>101 [EPA]</li>
+						<li>102 [Gallo/Getty]</li>
+						<li>103 [Gallo/Getty]</li>
+						<li>106 [EPA]</li>
+						<li>107 [Living the language]</li>
+						<li>110 [Getty]</li>
+						<li>111 [EPA]</li>
+						<li>112 [Getty]</li>
+						<li>113 [EPA]</li>
+						</ul>
+						</td>
+					
+					
+						<td>
+						<ul>
+						<li>119 [EPA]</li>
+						<li>120 [EPA]</li>
+						<li>123 [Getty]</li>
+						<li>124 [Gallo/Getty]</li>
+						<li>126 [Gallo/Getty]</li>
+						<li>127 [EPA]</li>
+						<li>129 [EPA]</li>
+						<li>132 [EPA]</li>
+						<li>134 [EPA]</li>
+						<li>136 [EPA]</li>
+						<li>137 [EPA]</li>
+						<li>138 [EPA]</li>
+						<li>141 [Getty]</li>
+						<li>142 [EPA]</li>
+						<li>143 [Getty]</li>
+						<li>144 [Getty]</li>
+						<li>145 [Gallo/Getty]</li>
+						<li>147 [Al Jazeera]</li>
+						<li>149 [EPA]</li>
+						<li>151 [Gallo/Getty]</li>
+						<li>152 [Gallo/Getty]</li>
+						<li>154 [EPA]</li>
+						<li>156 [The flying men of Yungas Valley]</li>
+						<li>158 [EPA]</li>
+						<li>161 [Al Jazeera]</li>
+						<li>163 [The Fight for Amazonia]</li>
+						</ul>
+						</td>
+					</tr>
+
+				</table>
+	    	</div>  
+
+
+		</div>
+	</div>
+</body>
+
+</html>

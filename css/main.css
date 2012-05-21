@@ -1,0 +1,542 @@
+body {
+    font-family: Arial;
+    font-size: 12px;
+    margin: 0;
+    background-color: #fff;
+    padding: 0;
+}
+
+.app-hldr {
+  width: 1000px;
+}
+
+.player-hldr {
+	float: left;
+	width: 680px;
+  background-color: #111;
+}
+
+.info-hldr {
+	float: left;
+	width :288px;
+	margin-left: 8px;
+	background-color: #eee;
+	padding: 12px;	
+	height :352px;
+}
+
+.info-title {
+  float: left;
+  width : 298px;
+	margin: 0 0 0 8px;
+  padding: 7px 0px 7px 14px;  
+  background-color: #FB9D04;
+  color: #fff;
+}
+
+.info {
+	height : 320px;
+  width: 284px;
+	overflow: auto;
+  overflow: hidden; 
+}
+
+.info-item {
+	/*border-top:1px solid #ccc;*/
+  width: 280px;
+  /*height: 320px;*/
+  padding-bottom: 40px;
+}
+
+#timeline .info-item {
+  height: 320px;
+}
+
+#fstimeline .info-item {
+  overflow: hidden;
+}
+
+.player {
+	height:48px;
+}
+
+
+.info-image {
+	float:left;
+	padding : 2px 8px 4px 0;
+}
+
+.info-text {
+	padding: 0 4px 0 4px;
+  color: #444;
+  line-height: 16px;
+}
+
+.info-intro {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+#fstimeline .info-text, #fstimeline .info-quote {
+   color: #fff;
+}
+
+.info-text a{
+  text-decoration: none;
+  color : #444;
+  border-bottom: 1px dotted #999;
+  
+}
+
+.info-text a:hover{
+  text-decoration: none;
+  border-bottom: 1px dotted #000;
+}
+
+#fstimeline .info-text a{
+  color: #ddd;
+}
+
+#fstimeline .info-text a:hover{
+  color: #fff;
+}
+
+.info-controls {
+  display:block;
+  margin-top : 16px;
+  clear: both;
+  width:284px;
+
+}
+
+.info-nav {
+	margin-top:24px;
+	padding: 8px;
+  width: 284px;
+  display:block;
+	/*position:absolute;*/
+}
+
+.info-social {
+  width: 380px;
+	margin-left: 180px;
+}
+
+.info-quote {
+  font-size: 14px;
+  font-style: italic;
+  color:#444;
+  padding: 0 8px 0 8px;
+  line-height: 18px;
+}
+
+.info-quoter {
+  text-align:right;
+  font-size: 14px;
+  color:#444;
+  padding-right: 8px;
+}
+
+#fstimeline .info-quoter{
+  color: #ddd;
+}
+
+
+/*
+.shadow {
+    -webkit-box-shadow:0px 0px 20px rgba(0,0,0,.3);
+    -moz-box-shadow:0px 0px 20px rgba(0,0,0,.3);
+    box-shadow:0px 0px 20px rgba(0,0,0,.3);
+}
+*/
+
+
+/* clean gray
+*******************************************************************************/
+a.clean-gray {
+  display:block;
+  text-decoration: none;
+
+  background-color: #eeeeee;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, #cccccc));
+  background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: -o-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: linear-gradient(top, #eeeeee, #cccccc);
+  border: 1px solid #ccc;
+  border-bottom: 1px solid #bbb;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  color: #333;
+  font: bold 9px "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  line-height: 1;
+  padding: 8px;
+  text-align: center;
+  text-shadow: 0 1px 0 #eee;
+  width: 51px; 
+  float: left;
+  margin-top:12px;
+}
+
+/* required for IE 8/9 */
+
+a.clean-gray img{
+  border : 0;
+}
+  
+ a.clean-gray:hover {
+    background-color: #dddddd;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dddddd), color-stop(100%, #bbbbbb));
+    background-image: -webkit-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: -moz-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: -ms-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: -o-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: linear-gradient(top, #dddddd, #bbbbbb);
+    border: 1px solid #bbb;
+    border-bottom: 1px solid #999;
+    cursor: pointer;
+    text-shadow: 0 1px 0 #ddd; 
+}
+
+
+/* twitter blue
+*******************************************************************************/
+a.twitter-blue {
+  display:block;
+  text-decoration: none;
+
+  background-color: #a4d8fe;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, #cccccc));
+  background-image: -webkit-linear-gradient(top, #a4d8fe, #3383bb);
+  background-image: -moz-linear-gradient(top, #a4d8fe, #3383bb);
+  background-image: -ms-linear-gradient(top, #a4d8fe, #3383bb);
+  background-image: -o-linear-gradient(top, #a4d8fe, #3383bb);
+  background-image: linear-gradient(top, #a4d8fe, #3383bb);
+  border: 1px solid #3383bb;
+  border-bottom: 1px solid #2679b4;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  color: #333;
+  font: bold 11px "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  line-height: 1;
+  padding: 8px;
+  text-align: center;
+  text-shadow: 0 1px 0 #eee;
+  width: 51px; 
+  float: left;
+  margin-left:4px;
+  margin-top:12px;
+
+}
+
+/* required for IE 8/9 */
+
+a.twitter-blue img{
+  border : 0;
+}
+  
+  
+ a.twitter-blue:hover {
+    background-color: #88c3ed;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dddddd), color-stop(100%, #bbbbbb));
+    background-image: -webkit-linear-gradient(top, #88c3ed, #2679b4);
+    background-image: -moz-linear-gradient(top, #88c3ed, #2679b4);
+    background-image: -ms-linear-gradient(top, #88c3ed, #2679b4);
+    background-image: -o-linear-gradient(top, #88c3ed, #2679b4);
+    background-image: linear-gradient(top, #88c3ed, #2679b4);
+    border: 1px solid #2679b4;
+    border-bottom: 1px solid #999;
+    cursor: pointer;
+    text-shadow: 0 1px 0 #2679b4; 
+}
+
+  
+ a.twitter-blue :active {
+    border: 1px solid #aaa;
+    border-bottom: 1px solid #888;
+    -webkit-box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee;
+    -moz-box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee;
+    box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee; 
+}
+
+/* AJ Orange
+*******************************************************************************/
+.aj-orange {
+  display:block;
+  text-decoration: none;
+
+  background-color: #fac101;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fac101), color-stop(100%, #fa9101));
+  background-image: -webkit-linear-gradient(top, #fac101, #fa9101);
+  background-image: -moz-linear-gradient(top, #fac101, #fa9101);
+  background-image: -ms-linear-gradient(top, #fac101, #fa9101);
+  background-image: -o-linear-gradient(top, #fac101, #fa9101);
+  background-image: linear-gradient(top, #fac101, #fa9101);
+  border: 1px solid #bc6d00;
+  border-bottom: 1px solid #bc6d00;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  color: #333;
+  font: bold 11px "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  line-height: 1;
+  padding: 8px;
+  text-align: center;
+  text-shadow: 0 1px 0 #eee;
+  width: 51px; 
+  float: left;
+  margin-left:4px;
+  margin-top:12px;
+
+}
+
+/* required for IE 8/9 */
+
+.aj-orange img{
+  border : 0;
+}
+  
+  
+a.aj-orange:hover {
+    background-color: #bc6d00;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fac101), color-stop(100%, #bc6d00));
+    background-image: -webkit-linear-gradient(top, #fa9101, #bc6d00);
+    background-image: -moz-linear-gradient(top, #fa9101, #bc6d00);
+    background-image: -ms-linear-gradient(top, #fa9101, #bc6d00);
+    background-image: -o-linear-gradient(top, #fa9101, #bc6d00);
+    background-image: linear-gradient(top, #fa9101, #bc6d00);
+    border: 1px solid #663b00;
+    border-bottom: 1px solid #663b00;
+    cursor: pointer;
+    text-shadow: 0 1px 0 #663b00; 
+}
+
+  
+.aj-orange :active {
+    border: 1px solid #aaa;
+    border-bottom: 1px solid #888;
+    -webkit-box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee;
+    -moz-box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee;
+    box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee; 
+}
+
+
+.button-img {
+	padding-right : 4px;
+}
+
+div.fullscreen-info {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    cursor:pointer;
+    background-color:rgba(0,0,0,0); /* Makes IE9 work with the active area over the whole video area. IE6/7/8 only have the button as active area. */
+}
+
+
+div.fullscreen-info .info-item{
+    position:relative;
+    display:block;
+    background-color : #000000;
+    color: #fff;
+    font-size: 14px;
+    opacity: 0.7;
+    filter:alpha(opacity=70); 
+    width: 296px;
+    max-height: 272px;
+    left:678px;
+    top:8px;
+    padding:8px;
+    z-index:999999;
+}
+
+div.footer-hldr {
+  margin-top: 8px;
+  width: 1000px;
+  height: 138px;
+  background-color: #fff;
+  float: left;
+}
+
+div.thumb-hldr {
+  width: 336px;
+  height: 138px;
+  float: left;
+  margin-right: 8px;
+}
+
+div.project-info-hldr {
+  font-size: 13px;
+  font-weight:bold;
+  color:#444; 
+  padding: 0 12px 0 12px;
+  width: 656px;
+  height: 138px;
+  margin-right: 8px;
+  background-color: #eee;
+  float: left;
+}
+
+div.project-info-hldr a{
+  text-decoration: none;
+  color: #000;
+  border-bottom: 1px dotted #000;
+}
+
+div.corner-hldr {
+  font-size: 13px;
+  font-weight:bold;
+  padding: 0 16px 0 16px;
+  width: 280px;
+  height: 138px;
+  color: #fff;
+  background-color: #FB9D04;
+  float: left;
+}
+
+div.corner-hldr a{
+  text-decoration: none;
+  color: #fff;
+  border-bottom: 1px dotted #fff;
+}
+
+div.corner-hldr a:hover{
+  text-decoration: none;
+  color: #444;
+  border-bottom: 1px dotted #444;
+}
+
+div.corner-hldr a{
+  text-decoration: none;
+  color: #fff;
+  border-bottom: 1px dotted #fff;
+}
+
+div.popout-hldr a{
+  width: 32px;
+  padding: 8px 6px 8px 10px;
+  float:right;
+  margin-top: -40px;
+}  
+
+.viewsource-hldr {
+  text-align:right;
+  margin-top:-27px;
+}
+
+#overlay {
+  position:absolute;
+  top:0;
+  left:0;
+  width:1000px;
+  height:563px;  
+  /*background-color:#999;*/
+  /*opacity: 0.9;
+  filter:alpha(opacity=90); */
+  background-color: rgba(100,100,100,0.9);
+  z-index: 9999999;
+}
+
+#close-overlay {
+  position:absolute;
+  top:88px;
+  left:792px;
+}
+
+p a.inst {
+  width:31px;
+  margin:0 18px 0 4px;
+}
+
+p a.start {
+  width:244px;
+  height: 36px;
+  margin:20px 23px 0 4px;
+  font-size: 30px;
+}
+
+.logo-small {
+  margin-right:26px;
+  margin-top:60px;
+}
+
+.logos img {
+  padding-left: 10px;
+  padding-top: 8px;
+  border: 0px;
+}
+
+div.logos a {
+  text-decoration: none;
+  border: 0;
+}
+
+div.logos a:hover {
+  text-decoration: none;
+  border: 0;
+}
+
+a.left-logo img {
+  padding-left: 0;
+}
+
+.corner-link {
+  font-size: 20px;
+  /*margin-left:62px;*/
+  float: left;
+}
+
+.pop-link {
+  float: right;
+  margin-top: -5px;
+}
+
+.collaborate {
+  padding-bottom: 16px;
+}
+
+.more-info {
+  font-size: 20px;
+  float: right;
+}
+
+.panel-num-hldr {
+  float: right;
+  margin-top: -20px;
+  padding-right: 4px;
+  font-size: 16px;
+  color: #999;
+}
+
+.credits {
+  font-size: 10px;
+}
+
+.d-play {
+  font-size: 16px;
+  padding-left: 4px;
+  padding-top: 24px;
+  color: #444;
+  font-weight: bold;
+}
+
+.d-play a {
+  text-decoration: none;
+  color: #000;
+  border-bottom: 1px dotted #444;
+}
+
+.d-play a:hover {
+  text-decoration: none;
+  border-bottom: 1px dotted #444;
+}
