@@ -1,16 +1,3 @@
-/*
- * jPlayer Plugin for Popcorn.js
- * http://www.jplayer.org
- *
- * Dual licensed under the MIT and GPL licenses.
- *  - http://www.opensource.org/licenses/mit-license.php
- *  - http://www.gnu.org/copyleft/gpl.html
- *
- * Author: Mark J Panaghiston
- * Version: 0.0.1
- * Date: 14th Februray 2012
- */
-
 (function( Popcorn ) {
 
   // combines calls of two function calls into one
